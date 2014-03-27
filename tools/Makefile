@@ -4,6 +4,7 @@ LDFLAGS +=
 .PHONY: clean
 
 all: \
+  pnmratio \
   pnmtoplainpnm
 
 %.o: %.c
@@ -12,9 +13,13 @@ all: \
 pnmtoplainpnm: pnmtoplainpnm.o ../pnmreader/pnmreader.o ../pnmwriter/pnmwriter.o
 	$(CC) $(LDFLAGS) -o $@ $^
 
+pnmratio: pnmratio.o ../pnmreader/pnmreader.o ../pnmwriter/pnmwriter.o
+	$(CC) $(LDFLAGS) -o $@ $^
+
 clean:
 	rm -f \
 	  *.o \
+	  pnmratio \
 	  pnmtoplainpnm \
 	  ../pnmreader/pnmreader.o \
 	  ../pnmwriter/pnmwriter.o
