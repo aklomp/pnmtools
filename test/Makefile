@@ -5,6 +5,7 @@ LDFLAGS +=
 
 all: \
   test \
+  imgsize \
   simplecopy \
   pnmcopy
 
@@ -12,6 +13,9 @@ all: \
 	$(CC) $(CFLAGS) -o $@ -c $^
 
 test: test.o ../pnmreader/pnmreader.o
+	$(CC) $(LDFLAGS) -o $@ $^
+
+imgsize: imgsize.o ../pnmreader/pnmreader.o
 	$(CC) $(LDFLAGS) -o $@ $^
 
 simplecopy: simplecopy.o ../pnmreader/pnmreader.o
@@ -23,6 +27,6 @@ pnmcopy: pnmcopy.o ../pnmreader/pnmreader.o ../pnmwriter/pnmwriter.o
 clean:
 	rm -f \
 	  *.o \
-	  test simplecopy pnmcopy \
+	  test imgsize simplecopy pnmcopy \
 	  ../pnmreader/pnmreader.o \
 	  ../pnmwriter/pnmwriter.o
