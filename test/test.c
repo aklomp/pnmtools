@@ -17,12 +17,15 @@ struct test
 	enum pnmreader_result result;
 };
 
+static int ret = 0;
+
 static bool
 got_format (enum pnm_format format, void *data)
 {
 	struct test *t = data;
 	if (format != t->format) {
 		printf("Fail: %s: format: expected %d, got %d\n", t->name, t->format, format);
+		ret = 1;
 	}
 	return true;
 }
@@ -33,9 +36,11 @@ got_geometry (unsigned int width, unsigned int height, void *data)
 	struct test *t = data;
 	if (width != t->width) {
 		printf("Fail: %s: width: expected %d, got %d\n", t->name, t->width, width);
+		ret = 1;
 	}
 	if (height != t->height) {
 		printf("Fail: %s: height: expected %d, got %d\n", t->name, t->height, height);
+		ret = 1;
 	}
 	return true;
 }
@@ -46,6 +51,7 @@ got_maxval (unsigned int maxval, void *data)
 	struct test *t = data;
 	if (maxval != t->maxval) {
 		printf("Fail: %s: maxval: expected %d, got %d\n", t->name, t->maxval, maxval);
+		ret = 1;
 	}
 	return true;
 }
@@ -56,6 +62,7 @@ got_pixel (unsigned int col, unsigned int row, unsigned int r, unsigned int g, u
 	struct test *t = data;
 	if (r != t->pixels[row * t->width + col]) {
 		printf("Fail: %s: pixels: at (%u,%u): expected %u, got %u\n", t->name, col, row, t->pixels[row * t->width + col], r);
+		ret = 1;
 	}
 	return true;
 }
@@ -68,9 +75,11 @@ run_test (struct test *test)
 
 	if ((pr = pnmreader_create(got_format, got_geometry, got_maxval, got_pixel, test)) == NULL) {
 		printf("Fail: %s: pnmreader_create: could not allocate pnmreader\n", test->name);
+		ret = 1;
 	}
 	if ((res = pnmreader_feed(pr, test->image, test->nbytes)) != test->result) {
 		printf("Fail: %s: pnmreader_feed: expected %d, got %d\n", test->name, test->result, res);
+		ret = 1;
 	}
 	pnmreader_destroy(pr);
 }
@@ -208,4 +217,6 @@ main (void)
 	test4();
 	test5();
 	test6();
+
+	return ret;
 }

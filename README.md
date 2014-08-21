@@ -12,7 +12,9 @@ Keep in mind that the PNM image format is fairly loosely specified.
 Does whitespace include a vertical tab?
 `man pbm` claims it doesn't, but the online documentation claims it does.
 This package has been tested for interoperability with the canonical `netpbm` package, and works as it should.
-Tests are included in [tests](tests).
+Tests are included in [test](test).
+
+[![Build Status](https://travis-ci.org/aklomp/pnmtools.svg)](https://travis-ci.org/aklomp/pnmtools)
 
 ## pnmreader
 
