@@ -1,18 +1,20 @@
 CFLAGS += -std=c99 -Wall -Werror -pedantic -O3
 LDFLAGS +=
 
-.PHONY: clean
+.PHONY: all clean
 
-all: \
-  test \
+PROG = \
+  test-reader \
   imgsize \
   simplecopy \
   pnmcopy
 
+all: $(PROG)
+
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $^
 
-test: test.o ../pnmreader/pnmreader.o
+test-reader: test-reader.o ../pnmreader/pnmreader.o
 	$(CC) $(LDFLAGS) -o $@ $^
 
 imgsize: imgsize.o ../pnmreader/pnmreader.o
@@ -27,6 +29,6 @@ pnmcopy: pnmcopy.o ../pnmreader/pnmreader.o ../pnmwriter/pnmwriter.o
 clean:
 	rm -f \
 	  *.o \
-	  test imgsize simplecopy pnmcopy \
+	  $(PROG) \
 	  ../pnmreader/pnmreader.o \
 	  ../pnmwriter/pnmwriter.o

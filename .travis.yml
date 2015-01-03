@@ -5,4 +5,4 @@ compiler:
   - gcc
 
 script:
-  - ( cd test && make && ./test )
+  - ( cd test && make && ./test-reader )
