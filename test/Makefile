@@ -1,7 +1,7 @@
 CFLAGS += -std=c99 -Wall -Werror -pedantic -O3
 LDFLAGS +=
 
-.PHONY: all clean
+.PHONY: test clean
 
 PROG = \
   test-reader \
@@ -9,7 +9,9 @@ PROG = \
   simplecopy \
   pnmcopy
 
-all: $(PROG)
+# This phony target makes and runs all tests:
+test: clean test-reader
+	./test-reader
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $^
