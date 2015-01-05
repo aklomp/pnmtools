@@ -1,7 +1,7 @@
 CFLAGS += -std=c99 -Wall -Werror -pedantic -O3
 LDFLAGS +=
 
-.PHONY: test clean
+.PHONY: all analyze test clean
 
 PROG = \
   test-reader \
@@ -12,6 +12,9 @@ PROG = \
 # This phony target makes and runs all tests:
 test: clean test-reader
 	./test-reader
+
+# This target is called recursively by `make analyze`:
+all: $(PROG)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $^
@@ -27,6 +30,9 @@ simplecopy: simplecopy.o ../pnmreader/pnmreader.o
 
 pnmcopy: pnmcopy.o ../pnmreader/pnmreader.o ../pnmwriter/pnmwriter.o
 	$(CC) $(LDFLAGS) -o $@ $^
+
+analyze: clean
+	scan-build --use-analyzer=`which clang` --status-bugs make all
 
 clean:
 	rm -f \
